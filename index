@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สื่อโต้ตอบวิทยาศาสตร์ ม.2 | งานและกำลัง</title>
+<style>
+:root{--navy:#183153;--blue:#2463eb;--cyan:#dff5ff;--gold:#ffd166;--green:#198754;--red:#c0392b;--ink:#172033;--muted:#5b667a;--paper:#f4f7fb}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Tahoma,"Noto Sans Thai",sans-serif;line-height:1.65}
+header{background:linear-gradient(120deg,#183153,#2463eb);color:white;padding:28px 18px 32px}header .wrap,main{max-width:1080px;margin:auto}
+.eyebrow{letter-spacing:.08em;font-size:.85rem;opacity:.9}h1{margin:.25rem 0;font-size:clamp(1.8rem,5vw,3rem)}header p{max-width:760px;margin:.5rem 0 0}
+main{padding:20px 14px 42px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.card{background:white;border:1px solid #e1e8f2;border-radius:18px;padding:20px;box-shadow:0 5px 18px #1831530b;margin-bottom:16px}
+h2{font-size:1.35rem;margin:0 0 10px;color:var(--navy)}h3{font-size:1.08rem;margin:.2rem 0 .5rem}
+.formula{font-size:1.35rem;font-weight:bold;background:#edf4ff;border-radius:12px;padding:12px;text-align:center;color:#173b78}
+.muted{color:var(--muted);font-size:.94rem}.controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:14px 0}
+label{display:block;font-weight:bold;margin-bottom:5px}input[type=range]{width:100%;accent-color:var(--blue)}select,button{font:inherit;border-radius:10px;padding:10px 13px;border:1px solid #cbd5e1}
+button{background:var(--blue);color:white;border:0;font-weight:bold;cursor:pointer}button.secondary{background:#e8eef8;color:var(--navy)}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #f4b942;outline-offset:2px}
+.readouts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.metric{background:#f3f7fc;border-radius:12px;padding:10px;text-align:center}.metric strong{display:block;font-size:1.3rem;color:var(--navy)}
+canvas{display:block;width:100%;height:auto;border-radius:12px;background:#f8fbff;border:1px solid #e1e8f2}
+.scene{position:relative;background:linear-gradient(#eaf8ff 0 68%,#d8ead2 68%);border-radius:14px;overflow:hidden;border:1px solid #d5e3ef}
+.scene canvas{border:0;background:transparent}.tag{display:inline-block;background:#e6f6ed;color:#146c43;padding:3px 9px;border-radius:99px;font-size:.85rem;font-weight:bold}
+.question{padding:13px 0;border-bottom:1px solid #e7edf5}.question:last-child{border-bottom:0}.options{display:grid;gap:7px;margin:8px 0}.options label{font-weight:normal;border:1px solid #dce4ef;border-radius:10px;padding:8px 10px;cursor:pointer}.options input{margin-right:7px}
+.feedback{padding:10px 12px;border-radius:10px;margin-top:8px;background:#f0f5fb}.good{background:#e7f7ee;color:#145c35}.bad{background:#fff0ed;color:#8d2b20}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:12px}
+@media(max-width:560px){.controls{grid-template-columns:1fr}.readouts{grid-template-columns:1fr 1fr}.readouts .metric:last-child{grid-column:span 2}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">สื่อการเรียนรู้แบบโต้ตอบ • วิทยาศาสตร์และเทคโนโลยี</div>
+<h1>งานและกำลัง</h1>
+<p>ระดับชั้นมัธยมศึกษาปีที่ 2 — ทดลองปรับแรง ระยะทาง และเวลา พร้อมสังเกตการเคลื่อนที่และกราฟที่เปลี่ยนแบบเรียลไทม์</p>
+</div></header>
+<main>
+<section class="grid">
+<div class="card">
+<h2>1. รู้จัก “งาน” และ “กำลัง”</h2>
+<p><b>งาน (W)</b> เกิดขึ้นเมื่อมีแรงทำให้วัตถุเคลื่อนที่ไปตามแนวแรง</p>
+<div class="formula">W = F × s</div>
+<p class="muted">W = งาน (จูล, J) • F = แรงในแนวการเคลื่อนที่ (นิวตัน, N) • s = ระยะทาง (เมตร, m)</p>
+<p><b>กำลัง (P)</b> คืออัตราการทำงานต่อหน่วยเวลา</p>
+<div class="formula">P = W ÷ t</div>
+<p class="muted">P = กำลัง (วัตต์, W) • t = เวลา (วินาที, s)</p>
+<p class="muted">แบบจำลองนี้สมมติว่าแรงคงที่และมีทิศเดียวกับการเคลื่อนที่</p>
+</div>
+<div class="card">
+<h2>2. สังเกตจากชีวิตประจำวัน</h2>
+<div class="scene"><canvas id="scene" width="640" height="270" aria-label="ภาพจำลองคนผลักกล่องเคลื่อนที่บนพื้น"></canvas></div>
+<p id="sceneCaption" class="muted" aria-live="polite">คนผลักกล่องไปทางขวา: เมื่อกล่องเคลื่อนที่ตามแนวแรง จะเกิดงานจากแรงผลัก</p>
+<div class="grid">
+<div><span class="tag">เกิดงาน</span><p class="muted">ผลักรถเข็นแล้วรถเข็นเคลื่อนที่ไปข้างหน้า</p></div>
+<div><span class="tag" style="background:#fff0ed;color:#8d2b20">งานเป็นศูนย์</span><p class="muted">ออกแรงดันกำแพงแต่กำแพงไม่เคลื่อนที่ (ระยะทางเป็นศูนย์)</p></div>
+</div>
+</div>
+</section>
+
+<section class="card">
+<h2>3. ห้องทดลองเสมือน: ลองปรับค่า</h2>
+<p>เลื่อนแถบแรง ระยะทาง และเวลา แล้วสังเกตภาพเคลื่อนไหว ค่างาน กำลัง และกราฟ</p>
+<div class="controls">
+<div><label for="force">แรงผลัก: <span id="forceVal">20</span> N</label><input id="force" type="range" min="0" max="100" step="5" value="20"></div>
+<div><label for="distance">ระยะทาง: <span id="distanceVal">3</span> m</label><input id="distance" type="range" min="0" max="10" step="0.5" value="3"></div>
+<div><label for="time">เวลา: <span id="timeVal">4</span> s</label><input id="time" type="range" min="1" max="10" step="1" value="4"></div>
+<div><label for="mode">กราฟที่ต้องการดู</label><select id="mode"><option value="distance">งานกับระยะทาง (แรงคงที่)</option><option value="force">งานกับแรง (ระยะทางคงที่)</option><option value="power">กำลังกับเวลา (งานคงที่)</option></select></div>
+</div>
+<div class="readouts">
+<div class="metric">งาน (W)<strong><span id="work">60</span> J</strong></div>
+<div class="metric">กำลัง (P)<strong><span id="power">15</span> W</strong></div>
+<div class="metric">แรง × ระยะทาง<strong><span id="product">20 × 3</span></strong></div>
+</div>
+<div class="scene"><canvas id="lab" width="900" height="260" aria-label="ภาพเคลื่อนไหวจำลองกล่องที่เคลื่อนที่ตามแรง"></canvas></div>
+<p id="labCaption" class="muted" aria-live="polite">กล่องเคลื่อนที่ตามแนวแรง</p>
+<div style="margin-top:16px"><canvas id="chart" width="900" height="340" aria-label="กราฟแสดงความสัมพันธ์ระหว่างตัวแปร"></canvas></div>
+<div class="grid" style="margin-top:12px">
+<div><button id="play">▶ เล่นภาพเคลื่อนไหว</button> <button id="pause" class="secondary">หยุด</button></div>
+<div><button id="reset" class="secondary">คืนค่าเริ่มต้น</button></div>
+</div>
+<p class="muted">ข้อสังเกต: ถ้าแรงหรือระยะทางเพิ่มขึ้น งานจะเพิ่มขึ้นตามสมการ W = F × s ส่วนเมื่อทำงานเท่าเดิมในเวลาน้อยลง กำลังจะมากขึ้น</p>
+</section>
+
+<section class="card">
+<h2>4. ภารกิจคิดวิเคราะห์</h2>
+<p>ตอบคำถามทั้ง 3 ข้อ แล้วกด “ตรวจคำตอบ” เพื่อดูผลและเฉลย</p>
+<form id="quiz">
+<div class="question"><b>ข้อ 1.</b> นักเรียนออกแรงผลักกล่อง 10 N ให้เคลื่อนที่ไปตามแนวแรง 4 m งานที่เกิดขึ้นมีค่าเท่าใด?
+<div class="options">
+<label><input type="radio" name="q1" value="a"> 14 J</label>
+<label><input type="radio" name="q1" value="b"> 40 J</label>
+<label><input type="radio" name="q1" value="c"> 2.5 J</label>
+</div><div class="feedback" id="f1" hidden></div></div>
+<div class="question"><b>ข้อ 2.</b> ทำงาน 120 J เสร็จใน 6 s จะมีกำลังเท่าใด?
+<div class="options">
+<label><input type="radio" name="q2" value="a"> 20 W</label>
+<label><input type="radio" name="q2" value="b"> 720 W</label>
+<label><input type="radio" name="q2" value="c"> 114 W</label>
+</div><div class="feedback" id="f2" hidden></div></div>
+<div class="question"><b>ข้อ 3.</b> ข้อใดเป็นกรณีที่งานจากแรงผลักมีค่าเป็นศูนย์ในแบบจำลองนี้?
+<div class="options">
+<label><input type="radio" name="q3" value="a"> ผลักรถเข็นให้เคลื่อนที่ 2 m</label>
+<label><input type="radio" name="q3" value="b"> ผลักกล่องให้เคลื่อนที่ 5 m</label>
+<label><input type="radio" name="q3" value="c"> ดันกำแพงแต่กำแพงไม่เคลื่อนที่</label>
+</div><div class="feedback" id="f3" hidden></div></div>
+<button type="submit">ตรวจคำตอบ</button> <button type="button" id="showAnswers" class="secondary">แสดงเฉลย</button>
+<div id="score" aria-live="polite" style="margin-top:12px;font-weight:bold"></div>
+</form>
+</section>
+<section class="card">
+<h2>5. สรุปสิ่งที่ค้นพบ</h2>
+<ul>
+<li>งานจากแรงคงที่ในแนวเดียวกับการเคลื่อนที่คำนวณได้จาก แรง × ระยะทาง</li>
+<li>ถ้าวัตถุไม่เคลื่อนที่ ระยะทางเป็นศูนย์ งานจากแรงนั้นจึงเป็นศูนย์</li>
+<li>กำลังบอกว่าเราทำงานได้เร็วเพียงใด คำนวณจาก งาน ÷ เวลา</li>
+</ul>
+<p><b>ชวนคิด:</b> ถ้าต้องยกกระเป๋าขึ้นชั้นวางในระยะสูงเท่ากัน คนสองคนทำงานได้เท่ากัน แต่คนที่ใช้เวลาน้อยกว่าจะมีกำลังมากกว่าหรือไม่? เพราะเหตุใด</p>
+</section>
+</main>
+<footer>สื่อประกอบการเรียนรู้ • สามารถเปิดไฟล์นี้ด้วยเว็บเบราว์เซอร์ได้โดยไม่ต้องใช้อินเทอร์เน็ต</footer>
+<script>
+const $=id=>document.getElementById(id);
+const force=$('force'), distance=$('distance'), time=$('time'), mode=$('mode');
+let animating=true, last=0, phase=0;
+function values(){let F=+force.value,s=+distance.value,t=+time.value;return {F,s,t,W:F*s,P:F*s/t};}
+function updateLabels(){const v=values();$('forceVal').textContent=v.F;$('distanceVal').textContent=v.s;$('timeVal').textContent=v.t;$('work').textContent=v.W;$('power').textContent=Number(v.P.toFixed(2));$('product').textContent=v.F+' × '+v.s;
+$('labCaption').textContent=v.s===0?'ระยะทางเป็นศูนย์: แม้มีแรง แต่ไม่มีงานจากแรงนี้':v.F===0?'แรงเป็นศูนย์: ในแบบจำลองนี้งานจากแรงผลักเป็นศูนย์':'แรง '+v.F+' N ทำให้กล่องเคลื่อนที่ '+v.s+' m เกิดงาน '+v.W+' J ในเวลา '+v.t+' s (กำลัง '+Number(v.P.toFixed(2))+' W)';
+drawChart();drawLab();}
+function drawBox(ctx,x,y,w,h){ctx.fillStyle='#e5a33d';ctx.strokeStyle='#875b21';ctx.lineWidth=3;ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);ctx.strokeStyle='#875b21';ctx.beginPath();ctx.moveTo(x+w/2,y);ctx.lineTo(x+w/2,y+h);ctx.stroke();ctx.fillStyle='#fff4d7';ctx.font='bold 16px Tahoma';ctx.textAlign='center';ctx.fillText('กล่อง',x+w/2,y+h/2+6);}
+function drawPerson(ctx,x,y,scale=1){ctx.save();ctx.translate(x,y);ctx.scale(scale,scale);ctx.strokeStyle='#24466d';ctx.lineWidth=7;ctx.lineCap='round';ctx.beginPath();ctx.arc(0,-48,13,0,Math.PI*2);ctx.stroke();ctx.beginPath();ctx.moveTo(0,-34);ctx.lineTo(0,4);ctx.moveTo(0,-22);ctx.lineTo(28,-8);ctx.moveTo(0,-20);ctx.lineTo(-17,-4);ctx.moveTo(0,4);ctx.lineTo(-15,29);ctx.moveTo(0,4);ctx.lineTo(16,29);ctx.stroke();ctx.restore();}
+function drawScene(){let c=$('scene'),ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#d8ead2';ctx.fillRect(0,185,c.width,85);drawPerson(ctx,110,164,1.25);drawBox(ctx,200,120,110,65);ctx.strokeStyle='#2463eb';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(315,148);ctx.lineTo(390,148);ctx.lineTo(377,138);ctx.moveTo(390,148);ctx.lineTo(377,158);ctx.stroke();ctx.fillStyle='#183153';ctx.font='bold 18px Tahoma';ctx.fillText('แรง',350,130);ctx.fillText('การเคลื่อนที่',450,205);}
+function drawLab(){let c=$('lab'),ctx=c.getContext('2d'),v=values(),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);ctx.fillStyle='#d8ead2';ctx.fillRect(0,190,w,70);ctx.strokeStyle='#9fb3c8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(20,190);ctx.lineTo(w-20,190);ctx.stroke();let travel=Math.min(550,v.s*55),x=100+(animating?(phase%1)*travel:travel/2);x=Math.min(w-150,Math.max(35,x));drawPerson(ctx,Math.max(35,x-65),185,.8);drawBox(ctx,x,135,95,55);
+if(v.F>0&&v.s>0){ctx.strokeStyle='#2463eb';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(x+100,158);ctx.lineTo(x+100+Math.min(160,v.F*1.4),158);ctx.lineTo(x+88+Math.min(160,v.F*1.4),148);ctx.moveTo(x+100+Math.min(160,v.F*1.4),158);ctx.lineTo(x+88+Math.min(160,v.F*1.4),168);ctx.stroke();ctx.fillStyle='#183153';ctx.font='bold 17px Tahoma';ctx.fillText('F = '+v.F+' N',x+105,135);}
+ctx.fillStyle='#183153';ctx.font='bold 18px Tahoma';ctx.fillText('ระยะทางที่กำหนด = '+v.s+' m',25,35);ctx.fillText('เวลา = '+v.t+' s',25,62);if(v.s===0)ctx.fillText('ไม่มีการเคลื่อนที่ → W = 0 J',25,92);}
+function drawChart(){let c=$('chart'),ctx=c.getContext('2d'),v=values(),w=c.width,h=c.height;ctx.clearRect(0,0,w,h);let left=78,right=28,top=40,bottom=58,pw=w-left-right,ph=h-top-bottom;ctx.fillStyle='#183153';ctx.font='bold 20px Tahoma';ctx.textAlign='center';let title=mode.value==='distance'?'งานกับระยะทาง (แรงคงที่)':mode.value==='force'?'งานกับแรง (ระยะทางคงที่)':'กำลังกับเวลา (งานคงที่)';ctx.fillText(title,w/2,25);
+let xmax=mode.value==='distance'?10:mode.value==='force'?100:10;let ymax=mode.value==='distance'?Math.max(10,v.F*10):mode.value==='force'?Math.max(10,100*v.s):Math.max(10,v.W);let yLabel=mode.value==='power'?'กำลัง (W)':'งาน (J)',xLabel=mode.value==='distance'?'ระยะทาง (m)':mode.value==='force'?'แรง (N)':'เวลา (s)';
+ctx.strokeStyle='#dce5f0';ctx.lineWidth=1;ctx.fillStyle='#5b667a';ctx.font='14px Tahoma';ctx.textAlign='right';
+for(let i=0;i<=5;i++){let y=top+ph-i*ph/5;ctx.beginPath();ctx.moveTo(left,y);ctx.lineTo(left+pw,y);ctx.stroke();ctx.fillText((ymax*i/5).toFixed(ymax<20?1:0),left-10,y+5);}
+ctx.textAlign='center';for(let i=0;i<=5;i++){let x=left+i*pw/5;ctx.beginPath();ctx.moveTo(x,top);ctx.lineTo(x,top+ph);ctx.stroke();ctx.fillText((xmax*i/5).toFixed(xmax===10?0:0),x,top+ph+22);}
+ctx.save();ctx.translate(20,top+ph/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='#183153';ctx.fillText(yLabel,0,0);ctx.restore();ctx.fillStyle='#183153';ctx.fillText(xLabel,left+pw/2,h-12);
+ctx.strokeStyle='#2463eb';ctx.lineWidth=4;ctx.beginPath();for(let i=0;i<=100;i++){let xv=xmax*i/100,yv=mode.value==='distance'?v.F*xv:mode.value==='force'?xv*v.s:v.W/(i===0?1:xv);if(mode.value==='power'&&i===0)yv=v.W;let px=left+xv/xmax*pw,py=top+ph-Math.min(ymax,Math.max(0,yv))/ymax*ph;if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);}ctx.stroke();
+let cx,cy;if(mode.value==='distance'){cx=v.s;cy=v.W;}else if(mode.value==='force'){cx=v.F;cy=v.W;}else{cx=v.t;cy=v.P;}cx=Math.min(xmax,Math.max(0,cx));cy=Math.min(ymax,Math.max(0,cy));let px=left+cx/xmax*pw,py=top+ph-cy/ymax*ph;ctx.fillStyle='#e4572e';ctx.beginPath();ctx.arc(px,py,7,0,Math.PI*2);ctx.fill();ctx.fillStyle='#183153';ctx.textAlign='left';ctx.font='bold 14px Tahoma';ctx.fillText('ค่าปัจจุบัน: '+(mode.value==='power'?'P = '+v.P.toFixed(2)+' W':'W = '+v.W+' J'),left+10,top+20);
+}
+function loop(ts){if(animating){if(ts-last>35){phase+=.012;last=ts;drawLab();} }requestAnimationFrame(loop);}
+[force,distance,time,mode].forEach(el=>el.addEventListener('input',updateLabels));
+$('play').addEventListener('click',()=>{animating=true;});$('pause').addEventListener('click',()=>{animating=false;drawLab();});
+$('reset').addEventListener('click',()=>{force.value=20;distance.value=3;time.value=4;mode.value='distance';phase=0;animating=true;updateLabels();});
+const answers={q1:{value:'b',text:'เฉลย: 40 J เพราะ W = F × s = 10 × 4 = 40 J'},q2:{value:'a',text:'เฉลย: 20 W เพราะ P = W ÷ t = 120 ÷ 6 = 20 W'},q3:{value:'c',text:'เฉลย: ดันกำแพงแต่กำแพงไม่เคลื่อนที่ เพราะระยะทางเป็นศูนย์ จึงได้ W = F × 0 = 0 J'}};
+function reveal(){let score=0,answered=0;Object.entries(answers).forEach(([q,a],i)=>{let chosen=document.querySelector('input[name="'+q+'"]:checked'),box=$('f'+(i+1));box.hidden=false;box.className='feedback';if(chosen){answered++;if(chosen.value===a.value){score++;box.classList.add('good');box.textContent='ถูกต้อง! '+a.text;}else{box.classList.add('bad');box.textContent='ยังไม่ถูก '+a.text;}}else{box.textContent=a.text;}});$('score').textContent='คะแนน: '+score+'/3 (ตอบแล้ว '+answered+'/3 ข้อ)';}
+$('quiz').addEventListener('submit',e=>{e.preventDefault();reveal();});$('showAnswers').addEventListener('click',reveal);
+drawScene();updateLabels();requestAnimationFrame(loop);
+</script>
+</body>
+</html>
